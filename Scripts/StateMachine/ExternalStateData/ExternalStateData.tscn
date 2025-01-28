@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhhc43yuus6i2"]
+
+[ext_resource type="Script" path="res://Scripts/StateMachine/ExternalStateData/external_state_data.gd" id="1_uv17h"]
+
+[node name="ExternalStateData" type="Node"]
+script = ExtResource("1_uv17h")

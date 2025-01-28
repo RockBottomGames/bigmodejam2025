@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://sryl1178h61g"]
+
+[ext_resource type="Script" path="res://Scenes/_SceneManager/scene_manager.gd" id="1_n1b2p"]
+
+[node name="SceneManager" type="Node"]
+script = ExtResource("1_n1b2p")
+
+[node name="MenuLayer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="GameLayer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+follow_viewport_enabled = true

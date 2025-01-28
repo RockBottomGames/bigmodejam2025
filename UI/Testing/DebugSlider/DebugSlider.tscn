@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=3 uid="uid://dss4msfy51287"]
+
+[ext_resource type="Script" path="res://UI/Testing/DebugSlider/debug_slider.gd" id="1_7p064"]
+
+[node name="DebugSlider" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_7p064")
+
+[node name="ContentsContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TitleContainer" type="MarginContainer" parent="ContentsContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="ContentsContainer/TitleContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Placeholder Title"
+horizontal_alignment = 1
+
+[node name="SliderContainer" type="MarginContainer" parent="ContentsContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="Slider" type="HSlider" parent="ContentsContainer/SliderContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.01
+max_value = 10000.0
+step = 0.01
+value = 1.0
+exp_edit = true
+allow_greater = true
+allow_lesser = true
+
+[node name="ValuesContainer" type="MarginContainer" parent="ContentsContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/ValuesContainer"]
+layout_mode = 2
+
+[node name="MinimumContainer" type="MarginContainer" parent="ContentsContainer/ValuesContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Minimum" type="Label" parent="ContentsContainer/ValuesContainer/HBoxContainer/MinimumContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0.010000"
+
+[node name="CurrentContainer" type="MarginContainer" parent="ContentsContainer/ValuesContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Current" type="Label" parent="ContentsContainer/ValuesContainer/HBoxContainer/CurrentContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.000000"
+horizontal_alignment = 1
+
+[node name="MaximumContainer" type="MarginContainer" parent="ContentsContainer/ValuesContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Maximum" type="Label" parent="ContentsContainer/ValuesContainer/HBoxContainer/MaximumContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "10000.000000"

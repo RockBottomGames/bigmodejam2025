@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://nu0dhkjlcen4"]
+
+[ext_resource type="Script" path="res://Collision/RayCastFan2D/mirrored_ray_cast_2d.gd" id="1_1ad5l"]
+[ext_resource type="PackedScene" uid="uid://ttqddhbhf02b" path="res://Collision/RayCastFan2D/offset_ray_cast_2d.tscn" id="2_2vrnh"]
+
+[node name="MirroredRayCast2D" type="Node2D"]
+script = ExtResource("1_1ad5l")
+
+[node name="RayCast2DPos" parent="." instance=ExtResource("2_2vrnh")]
+unique_name_in_owner = true
+rotation = 0.0174533
+
+[node name="RayCast2DNeg" parent="." instance=ExtResource("2_2vrnh")]
+unique_name_in_owner = true
+rotation = -0.0174533

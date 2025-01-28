@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://dn6312dghbjbi"]
+
+[ext_resource type="Texture2D" uid="uid://to15xir0t57b" path="res://icon.svg" id="1_ktm0n"]
+[ext_resource type="PackedScene" uid="uid://bq7y7d43p4jmv" path="res://Characters/_Test/Enemy/Enemy.tscn" id="1_oc7l6"]
+[ext_resource type="PackedScene" uid="uid://bnxoliquvqq6k" path="res://Characters/Player/Player.tscn" id="2_a0lv7"]
+[ext_resource type="PackedScene" uid="uid://cja7maf7gmfoo" path="res://Objects/LightRail/light_rail.tscn" id="4_pfflb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f1brq"]
+size = Vector2(5120, 1280)
+
+[node name="TestLevel" type="Node2D"]
+scale = Vector2(0.5, 0.5)
+
+[node name="Enemy" parent="." instance=ExtResource("1_oc7l6")]
+position = Vector2(4998, -2133)
+
+[node name="Enemy3" parent="." instance=ExtResource("1_oc7l6")]
+position = Vector2(8779, -2496)
+
+[node name="Enemy4" parent="." instance=ExtResource("1_oc7l6")]
+position = Vector2(11954, -3155)
+
+[node name="Enemy2" parent="." instance=ExtResource("1_oc7l6")]
+position = Vector2(1601, -605)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(991, 1603)
+collision_layer = 32
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+scale = Vector2(40, 10)
+texture = ExtResource("1_ktm0n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_f1brq")
+
+[node name="Player" parent="." instance=ExtResource("2_a0lv7")]
+position = Vector2(848, 646)
+
+[node name="LightRail" parent="." instance=ExtResource("4_pfflb")]
+position = Vector2(1203, 381)

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0r2mik26fx83"]
+
+[ext_resource type="Script" path="res://Scripts/StateMachine/State/StateProcessHandler/state_process_handler_base.gd" id="1_0n6hm"]
+
+[node name="StateProcessHandlerBase" type="Node"]
+script = ExtResource("1_0n6hm")

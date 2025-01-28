@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dq3c40homjwfm"]
+
+[ext_resource type="Script" path="res://Collision/RayCastFan2D/ray_cast_fan_2d.gd" id="1_kbv1g"]
+
+[node name="RayCastFan2D" type="RayCast2D"]
+scale = Vector2(0.5, 0.5)
+target_position = Vector2(50, 0)
+script = ExtResource("1_kbv1g")

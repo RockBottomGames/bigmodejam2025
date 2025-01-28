@@ -1,0 +1,8 @@
+extends Node
+class_name ExternalStateNodes
+
+## THIS CLASS IS PURELY MEANT TO BE INHERITED AND IS USED TO GENERICALLY
+## REFER TO EXTERNAL NODES FOR A STATE MACHINE
+
+func reset() -> void:
+	pass

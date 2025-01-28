@@ -1,0 +1,264 @@
+[gd_scene load_steps=31 format=3 uid="uid://bnxoliquvqq6k"]
+
+[ext_resource type="Script" path="res://Characters/Player/player.gd" id="1_4kkc7"]
+[ext_resource type="Texture2D" uid="uid://dnix8uio4h5jc" path="res://Characters/Player/Images/sparkey_head_idle.png" id="2_6wvme"]
+[ext_resource type="Texture2D" uid="uid://kr2rq2qt6l6b" path="res://Characters/Player/Images/sparkey_head_move.png" id="3_04ee2"]
+[ext_resource type="PackedScene" uid="uid://dq3c40homjwfm" path="res://Collision/RayCastFan2D/RayCastFan2D.tscn" id="3_o548t"]
+[ext_resource type="Texture2D" uid="uid://b7qamu0peryww" path="res://Characters/Player/Images/sparkey_stache.png" id="3_rgjox"]
+[ext_resource type="PackedScene" uid="uid://dmeoxwxtwxhjk" path="res://Scripts/StateMachine/StateMachine.tscn" id="4_5x4c1"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/VerticalStateMachine/StateExternals/vertical_external_nodes.gd" id="4_xrr83"]
+[ext_resource type="Texture2D" uid="uid://d30xr2jtrrha7" path="res://Characters/Player/Images/sparkey_body.png" id="5_mwoti"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/VerticalStateMachine/StateExternals/vertical_external_data.gd" id="6_3amcm"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/VerticalStateMachine/States/vertical_on_floor_state.gd" id="6_6me8f"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/VerticalStateMachine/States/vertical_jumping_state.gd" id="7_ctlui"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/VerticalStateMachine/States/vertical_falling_state.gd" id="8_6slxo"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/VerticalStateMachine/States/vertical_terminal_falling_state.gd" id="9_l6182"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/HorizontalStateMachine/StateExternals/horizontal_external_nodes.gd" id="11_ljic6"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/HorizontalStateMachine/States/horizontal_still_state.gd" id="12_1pymx"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/HorizontalStateMachine/States/horizontal_running_state.gd" id="13_vh57f"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/HorizontalStateMachine/States/horizontal_top_speed_state.gd" id="14_uxcd2"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/HorizontalStateMachine/States/horizontal_slowing_state.gd" id="15_iwchg"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/HorizontalStateMachine/States/horizontal_turning_state.gd" id="16_n5tal"]
+[ext_resource type="Script" path="res://Characters/Player/StateMachines/HorizontalStateMachine/States/horizontal_pushing_state.gd" id="17_60uoe"]
+
+[sub_resource type="Animation" id="Animation_igepo"]
+length = 0.001
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../PlayerSpriteActual:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_04ee2")]
+}
+
+[sub_resource type="Animation" id="Animation_2sv4x"]
+resource_name = "hooked"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../PlayerSpriteActual:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_04ee2")]
+}
+
+[sub_resource type="Animation" id="Animation_xuuw8"]
+resource_name = "new_animation"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../PlayerSpriteActual:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_6wvme")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4euoq"]
+_data = {
+"RESET": SubResource("Animation_igepo"),
+"hooked": SubResource("Animation_2sv4x"),
+"idle": SubResource("Animation_xuuw8")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_484tw"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wqjyk"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_si0tm"]
+animation = &"hooked"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_lomqg"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_484tw")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_wqjyk")
+blend_point_1/pos = -1.0
+blend_point_2/node = SubResource("AnimationNodeAnimation_si0tm")
+blend_point_2/pos = 1.0
+blend_mode = 1
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pmvll"]
+radius = 95.0
+height = 415.0
+
+[sub_resource type="Resource" id="Resource_f8mbr"]
+script = ExtResource("6_3amcm")
+gravity_force = null
+is_in_air = false
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 224
+script = ExtResource("1_4kkc7")
+
+[node name="Rope" type="Line2D" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = -1
+points = PackedVector2Array(0, 0, 0, 0)
+default_color = Color(0.839216, 0.584314, 0.419608, 1)
+
+[node name="RopeGuide" type="Line2D" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = -1
+points = PackedVector2Array(0, 0, 0, 0)
+default_color = Color(0.839216, 0.584314, 0.419608, 0.294118)
+
+[node name="PlayerBody" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="PlayerBodyInternal" type="Node2D" parent="PlayerBody"]
+unique_name_in_owner = true
+
+[node name="PlayerBodyActual" type="Sprite2D" parent="PlayerBody/PlayerBodyInternal"]
+texture = ExtResource("5_mwoti")
+centered = false
+offset = Vector2(-384, -192)
+
+[node name="PlayerSpriteContainer" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Target" type="Node2D" parent="PlayerSpriteContainer"]
+
+[node name="MustacheAnchor" type="Node2D" parent="PlayerSpriteContainer/Target"]
+position = Vector2(79, 28)
+
+[node name="MustachLeftAnchor" type="Node2D" parent="PlayerSpriteContainer/Target"]
+position = Vector2(17, 53)
+
+[node name="MustachLeftTipAnchor" type="Node2D" parent="PlayerSpriteContainer/Target"]
+position = Vector2(-5, 54)
+
+[node name="MustacheRightAnchor" type="Node2D" parent="PlayerSpriteContainer/Target"]
+position = Vector2(106, 43)
+
+[node name="MustacheRightTipAnchor" type="Node2D" parent="PlayerSpriteContainer/Target"]
+position = Vector2(125, 44)
+
+[node name="PlayerSprite" type="Node2D" parent="PlayerSpriteContainer"]
+unique_name_in_owner = true
+
+[node name="PlayerSpriteActual" type="Sprite2D" parent="PlayerSpriteContainer/PlayerSprite"]
+texture = ExtResource("3_04ee2")
+centered = false
+offset = Vector2(-384, -192)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerSpriteContainer/PlayerSprite/PlayerSpriteActual"]
+unique_name_in_owner = true
+root_node = NodePath("../../Mustache")
+libraries = {
+"": SubResource("AnimationLibrary_4euoq")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="PlayerSpriteContainer/PlayerSprite/PlayerSpriteActual"]
+unique_name_in_owner = true
+root_node = NodePath("%AnimationTree/../../Mustache")
+tree_root = SubResource("AnimationNodeBlendSpace1D_lomqg")
+anim_player = NodePath("../AnimationPlayer")
+parameters/blend_position = 0.0
+
+[node name="Mustache" type="Sprite2D" parent="PlayerSpriteContainer/PlayerSprite"]
+position = Vector2(64, 26)
+texture = ExtResource("3_rgjox")
+centered = false
+offset = Vector2(-448, -218)
+
+[node name="Pointer" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="RayCastFan" parent="Pointer" instance=ExtResource("3_o548t")]
+unique_name_in_owner = true
+scale = Vector2(1, 1)
+target_position = Vector2(3000, 0)
+collision_mask = 28
+mirrored_pair_count = 15
+length = 3000.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 104)
+shape = SubResource("CapsuleShape2D_pmvll")
+
+[node name="Equilibrium" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(0, 0, 0, 0)
+
+[node name="ForceSpring" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(0, 0, 0, 0)
+
+[node name="ForceDamp" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(0, 0, 0, 0)
+
+[node name="StateMachines" type="Node2D" parent="."]
+
+[node name="VerticalStateMachineContainer" type="Node2D" parent="StateMachines"]
+
+[node name="VerticalExternalNodes" type="Node" parent="StateMachines/VerticalStateMachineContainer" node_paths=PackedStringArray("player_node")]
+script = ExtResource("4_xrr83")
+player_node = NodePath("../../..")
+
+[node name="VerticalStateMachine" parent="StateMachines/VerticalStateMachineContainer" node_paths=PackedStringArray("node_data") instance=ExtResource("4_5x4c1")]
+unique_name_in_owner = true
+data = SubResource("Resource_f8mbr")
+node_data = NodePath("../VerticalExternalNodes")
+
+[node name="OnFloor" type="Node2D" parent="StateMachines/VerticalStateMachineContainer/VerticalStateMachine"]
+script = ExtResource("6_6me8f")
+
+[node name="Jumping" type="Node2D" parent="StateMachines/VerticalStateMachineContainer/VerticalStateMachine"]
+script = ExtResource("7_ctlui")
+
+[node name="Falling" type="Node2D" parent="StateMachines/VerticalStateMachineContainer/VerticalStateMachine"]
+script = ExtResource("8_6slxo")
+
+[node name="TerminalFalling" type="Node2D" parent="StateMachines/VerticalStateMachineContainer/VerticalStateMachine"]
+script = ExtResource("9_l6182")
+
+[node name="HorizontalStateMachineContainer" type="Node2D" parent="StateMachines"]
+
+[node name="HorizontalExternalNodes" type="Node" parent="StateMachines/HorizontalStateMachineContainer" node_paths=PackedStringArray("player_node")]
+script = ExtResource("11_ljic6")
+player_node = NodePath("../../..")
+
+[node name="HorizontalStateMachine" parent="StateMachines/HorizontalStateMachineContainer" node_paths=PackedStringArray("node_data") instance=ExtResource("4_5x4c1")]
+unique_name_in_owner = true
+node_data = NodePath("../HorizontalExternalNodes")
+
+[node name="Still" type="Node2D" parent="StateMachines/HorizontalStateMachineContainer/HorizontalStateMachine"]
+script = ExtResource("12_1pymx")
+
+[node name="Running" type="Node2D" parent="StateMachines/HorizontalStateMachineContainer/HorizontalStateMachine"]
+script = ExtResource("13_vh57f")
+
+[node name="TopSpeed" type="Node2D" parent="StateMachines/HorizontalStateMachineContainer/HorizontalStateMachine"]
+script = ExtResource("14_uxcd2")
+
+[node name="Slowing" type="Node2D" parent="StateMachines/HorizontalStateMachineContainer/HorizontalStateMachine"]
+script = ExtResource("15_iwchg")
+
+[node name="Turning" type="Node2D" parent="StateMachines/HorizontalStateMachineContainer/HorizontalStateMachine"]
+script = ExtResource("16_n5tal")
+
+[node name="Pushing" type="Node2D" parent="StateMachines/HorizontalStateMachineContainer/HorizontalStateMachine"]
+script = ExtResource("17_60uoe")

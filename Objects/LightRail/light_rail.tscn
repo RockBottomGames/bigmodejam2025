@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cja7maf7gmfoo"]
+
+[ext_resource type="Script" path="res://Objects/LightRail/light_rail.gd" id="1_j61gu"]
+
+[sub_resource type="Curve2D" id="Curve2D_gj8c3"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4000, 0, 0, 0, 0, 0, 4000, -500)
+}
+point_count = 3
+
+[node name="LightRail" type="Path2D"]
+curve = SubResource("Curve2D_gj8c3")
+script = ExtResource("1_j61gu")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-50, -50, -50, 50, 4050, 50, 4050, -50, 4050, -550, 3950, -550, 3950, -50)
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
