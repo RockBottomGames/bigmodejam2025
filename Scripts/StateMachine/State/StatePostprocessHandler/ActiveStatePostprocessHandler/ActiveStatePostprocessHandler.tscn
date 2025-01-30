@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8l364sfk43a0"]
+
+[ext_resource type="Script" path="res://Scripts/StateMachine/State/StatePostprocessHandler/ActiveStatePostprocessHandler/active_state_postprocess_handler.gd" id="1_0p850"]
+
+[node name="ActiveStateProcessHandler" type="Node"]
+script = ExtResource("1_0p850")

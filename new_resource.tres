@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SpringData" load_steps=2 format=3 uid="uid://dhwji7bhatlef"]
+
+[ext_resource type="Script" path="res://Resources/ObjectAttributes/spring_data.gd" id="1_1etmo"]
+
+[resource]
+script = ExtResource("1_1etmo")
+spring_constant = 45.0
+damping_coefficient = 15.0
+equilibrium_distance = 0.0

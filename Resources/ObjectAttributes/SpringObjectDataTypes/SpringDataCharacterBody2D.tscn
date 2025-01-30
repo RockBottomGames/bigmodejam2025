@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cak4qgsjby3x7"]
+
+[ext_resource type="Script" path="res://Resources/ObjectAttributes/SpringObjectDataTypes/spring_data_character_body_2d.gd" id="1_14kus"]
+
+[node name="SpringDataCharacterBody2d" type="Node"]
+script = ExtResource("1_14kus")
