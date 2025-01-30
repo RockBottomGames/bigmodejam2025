@@ -204,30 +204,43 @@ func _check_and_set_unhooked_flipped():
 		player_sprite.apply_scale(Vector2(-1, 1))
 		player_body_internal.apply_scale(Vector2(-1, 1))
 
-func _on_spring_state_machine_container_unhooked_state_postprocess(delta: float) -> void:
+var _initial_body_angle_diff: float = 0.0
+
+func _on_enter_spring_unhooked_state() -> void:
 	player_body.rotation = 0.0 
 	player_body_internal.position.y = 0.0
+	
+func _postprocess_spring_unhooked_state(delta: float) -> void:
 	_check_and_set_unhooked_flipped()
 
-func _on_spring_state_machine_container_lerp_to_hooked_state_postprocess(delta: float, lerp_time: float) -> void:
-	player_body.rotation = player_sprite_container.rotation
+func _postprocess_spring_lerp_to_hooked_state(delta: float, lerp_time: float) -> void:
+	player_body.rotation = _local_collider_pos.angle() + (-PI * 0.5)
 	player_body_internal.position.y = lerpf(_prev_body_distance, _local_collider_pos.length() - 288, lerp_time)
 	_check_and_set_hooked_flipped()
 
-func _on_spring_state_machine_container_hooked_state_postprocess(delta: float) -> void:
-	player_body.rotation = player_sprite_container.rotation
+func _postprocess_spring_hooked_state(delta: float) -> void:
+	player_body.rotation = _local_collider_pos.angle() + (-PI * 0.5)
 	player_body_internal.position.y = _local_collider_pos.length() - 288
 	_check_and_set_hooked_flipped()
+	
+func _on_enter_spring_lerp_to_rehooked_state() -> void:
+	_prev_rotation = player_body.rotation
+	var target_angle: float = PhysicsMethods.get_closest_angle_to(_local_collider_pos.angle() + (-PI * 0.5), _prev_rotation)
+	_initial_body_angle_diff = _prev_rotation - target_angle
 
-func _on_spring_state_machine_container_lerp_to_rehooked_state_postprocess(delta: float, lerp_time: float) -> void:
-	# player_body.rotation = lerpf(_prev_rotation, player_sprite_container.rotation, lerp_time)
-	player_body.rotation = player_sprite_container.rotation
+func _postprocess_spring_lerp_to_rehooked_state(delta: float, lerp_time: float) -> void:
+	var lerped_difference: float = lerpf(_initial_body_angle_diff, 0.0, lerp_time)
+	var target_angle: float = _local_collider_pos.angle() + (-PI * 0.5)
+	player_body.rotation = target_angle + lerped_difference
 	player_body_internal.position.y = lerpf(_prev_body_distance, _local_collider_pos.length() - 288, lerp_time)
 	_check_and_set_hooked_flipped()
+	
+func _on_enter_spring_lerp_to_unhooked_state() -> void:
+	_prev_rotation = PhysicsMethods.get_closest_angle_to(player_body.rotation, 0.0)
+	_prev_body_distance = player_body_internal.position.y
 
-func _on_spring_state_machine_container_lerp_to_unhooked_state_postprocess(delta: float, lerp_time: float) -> void:
-	# player_body.rotation = lerpf(_prev_rotation, 0.0, lerp_time)
-	player_body.rotation = player_sprite_container.rotation
+func _postprocess_spring_lerp_to_unhooked_state(delta: float, lerp_time: float) -> void:
+	player_body.rotation = lerpf(_prev_rotation, 0.0, lerp_time)
 	player_body_internal.position.y = lerpf(_prev_body_distance, 0.0, lerp_time)
 	_check_and_set_unhooked_flipped()
 
@@ -236,6 +249,7 @@ func _physics_process(delta):
 	_update_collider()
 	get_input(delta)
 	pointer.rotation = InputGlobals.look_angle
+	_local_collider_pos = spring_object.calculate_local_spring_vector()
 	spring_state_machine_container.spring_state_machine.child_state_preprocess(delta)
 	spring_state_machine_container.spring_state_machine.check_and_exit_child_state()
 	vertical_state_machine.child_state_process(delta)

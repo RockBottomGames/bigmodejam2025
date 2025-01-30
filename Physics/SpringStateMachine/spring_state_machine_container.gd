@@ -1,11 +1,23 @@
 extends Node2D
 class_name SpringStateMachineContainer
 
-signal unhooked_state_postprocess(delta: float)
-signal lerp_to_hooked_state_postprocess(delta: float, lerp_time: float)
-signal hooked_state_postprocess(delta: float)
-signal lerp_to_rehooked_state_postprocess(delta: float, lerp_time: float)
-signal lerp_to_unhooked_state_postprocess(delta: float, lerp_time: float)
+signal on_enter_unhooked_state()
+signal on_enter_lerp_to_hooked_state()
+signal on_enter_hooked_state()
+signal on_enter_lerp_to_rehooked_state()
+signal on_enter_lerp_to_unhooked_state()
+
+signal postprocess_unhooked_state(delta: float)
+signal postprocess_lerp_to_hooked_state(delta: float, lerp_time: float)
+signal postprocess_hooked_state(delta: float)
+signal postprocess_lerp_to_rehooked_state(delta: float, lerp_time: float)
+signal postprocess_lerp_to_unhooked_state(delta: float, lerp_time: float)
+
+signal on_exit_unhooked_state()
+signal on_exit_lerp_to_hooked_state()
+signal on_exit_hooked_state()
+signal on_exit_lerp_to_rehooked_state()
+signal on_exit_lerp_to_unhooked_state()
 
 @onready var spring_external_state_nodes: SpringExternalNodes = %SpringExternalStateNodes
 @onready var spring_state_machine: StateMachine = %SpringStateMachine

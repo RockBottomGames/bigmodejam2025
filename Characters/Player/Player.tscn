@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://bnxoliquvqq6k"]
+[gd_scene load_steps=35 format=3 uid="uid://bnxoliquvqq6k"]
 
 [ext_resource type="Script" path="res://Characters/Player/player.gd" id="1_4kkc7"]
 [ext_resource type="Texture2D" uid="uid://dnix8uio4h5jc" path="res://Characters/Player/Images/sparkey_head_idle.png" id="2_6wvme"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://Characters/Player/StateMachines/VerticalStateMachine/States/vertical_on_floor_state.gd" id="6_6me8f"]
 [ext_resource type="PackedScene" uid="uid://cak4qgsjby3x7" path="res://Resources/ObjectAttributes/SpringObjectDataTypes/SpringDataCharacterBody2D.tscn" id="7_ai6sq"]
 [ext_resource type="Script" path="res://Characters/Player/StateMachines/VerticalStateMachine/States/vertical_jumping_state.gd" id="7_ctlui"]
+[ext_resource type="Texture2D" uid="uid://cjx5uftlnlh74" path="res://Characters/Player/Images/Pointer.png" id="7_lbe6m"]
 [ext_resource type="Script" path="res://Characters/Player/StateMachines/VerticalStateMachine/States/vertical_falling_state.gd" id="8_6slxo"]
 [ext_resource type="Script" path="res://Characters/Player/StateMachines/VerticalStateMachine/States/vertical_terminal_falling_state.gd" id="9_l6182"]
 [ext_resource type="Script" path="res://Characters/Player/StateMachines/HorizontalStateMachine/StateExternals/horizontal_external_nodes.gd" id="11_ljic6"]
@@ -189,10 +190,17 @@ unique_name_in_owner = true
 [node name="RayCastFan" parent="Pointer" instance=ExtResource("3_o548t")]
 unique_name_in_owner = true
 scale = Vector2(1, 1)
-target_position = Vector2(3000, 0)
+target_position = Vector2(4000, 0)
 collision_mask = 28
-mirrored_pair_count = 15
-length = 3000.0
+separation_degress = 1.5
+mirrored_pair_count = 21
+length = 4000.0
+
+[node name="PointerSprite" type="Sprite2D" parent="Pointer"]
+rotation = 1.5708
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("7_lbe6m")
+offset = Vector2(0, -110)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -276,8 +284,11 @@ spring = ExtResource("23_2dbli")
 spring_object = NodePath("../../SpringObject")
 rotation_node = NodePath("../../PlayerSpriteContainer")
 
-[connection signal="hooked_state_postprocess" from="StateMachines/SpringStateMachineContainer" to="." method="_on_spring_state_machine_container_hooked_state_postprocess"]
-[connection signal="lerp_to_hooked_state_postprocess" from="StateMachines/SpringStateMachineContainer" to="." method="_on_spring_state_machine_container_lerp_to_hooked_state_postprocess"]
-[connection signal="lerp_to_rehooked_state_postprocess" from="StateMachines/SpringStateMachineContainer" to="." method="_on_spring_state_machine_container_lerp_to_rehooked_state_postprocess"]
-[connection signal="lerp_to_unhooked_state_postprocess" from="StateMachines/SpringStateMachineContainer" to="." method="_on_spring_state_machine_container_lerp_to_unhooked_state_postprocess"]
-[connection signal="unhooked_state_postprocess" from="StateMachines/SpringStateMachineContainer" to="." method="_on_spring_state_machine_container_unhooked_state_postprocess"]
+[connection signal="on_enter_lerp_to_rehooked_state" from="StateMachines/SpringStateMachineContainer" to="." method="_on_enter_spring_lerp_to_rehooked_state"]
+[connection signal="on_enter_lerp_to_unhooked_state" from="StateMachines/SpringStateMachineContainer" to="." method="_on_enter_spring_lerp_to_unhooked_state"]
+[connection signal="on_enter_unhooked_state" from="StateMachines/SpringStateMachineContainer" to="." method="_on_enter_spring_unhooked_state"]
+[connection signal="postprocess_hooked_state" from="StateMachines/SpringStateMachineContainer" to="." method="_postprocess_spring_hooked_state"]
+[connection signal="postprocess_lerp_to_hooked_state" from="StateMachines/SpringStateMachineContainer" to="." method="_postprocess_spring_lerp_to_hooked_state"]
+[connection signal="postprocess_lerp_to_rehooked_state" from="StateMachines/SpringStateMachineContainer" to="." method="_postprocess_spring_lerp_to_rehooked_state"]
+[connection signal="postprocess_lerp_to_unhooked_state" from="StateMachines/SpringStateMachineContainer" to="." method="_postprocess_spring_lerp_to_unhooked_state"]
+[connection signal="postprocess_unhooked_state" from="StateMachines/SpringStateMachineContainer" to="." method="_postprocess_spring_unhooked_state"]
