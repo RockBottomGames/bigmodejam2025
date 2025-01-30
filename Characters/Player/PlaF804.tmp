@@ -213,8 +213,7 @@ points = PackedVector2Array(0, 0, 0, 0)
 visible = false
 points = PackedVector2Array(0, 0, 0, 0)
 
-[node name="SpringObject" parent="." node_paths=PackedStringArray("object") instance=ExtResource("7_ai6sq")]
-unique_name_in_owner = true
+[node name="SpringDataCharacterBody2d" parent="." node_paths=PackedStringArray("object") instance=ExtResource("7_ai6sq")]
 object = NodePath("..")
 
 [node name="StateMachines" type="Node2D" parent="."]
@@ -273,7 +272,7 @@ script = ExtResource("17_60uoe")
 [node name="SpringStateMachineContainer" parent="StateMachines" node_paths=PackedStringArray("spring_object", "rotation_node") instance=ExtResource("21_ru3vy")]
 unique_name_in_owner = true
 spring = ExtResource("23_2dbli")
-spring_object = NodePath("../../SpringObject")
+spring_object = NodePath("../../SpringDataCharacterBody2d")
 rotation_node = NodePath("../../PlayerSpriteContainer")
 
 [connection signal="hooked_state_postprocess" from="StateMachines/SpringStateMachineContainer" to="." method="_on_spring_state_machine_container_hooked_state_postprocess"]

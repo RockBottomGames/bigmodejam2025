@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddiefkt8j4jtf"]
+
+[ext_resource type="Script" path="res://Scripts/StateMachine/State/StatePreprocessHandler/state_preprocess_handler_base.gd" id="1_uxmar"]
+
+[node name="StateProcessHandlerBase" type="Node"]
+script = ExtResource("1_uxmar")

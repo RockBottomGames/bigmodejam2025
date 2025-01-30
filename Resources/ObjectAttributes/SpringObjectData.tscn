@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5gp6ikvc238s"]
+
+[ext_resource type="Script" path="res://Resources/ObjectAttributes/spring_object_data.gd" id="1_iunyc"]
+
+[node name="SpringObjectData" type="Node"]
+script = ExtResource("1_iunyc")

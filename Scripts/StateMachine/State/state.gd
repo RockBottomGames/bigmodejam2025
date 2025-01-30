@@ -9,10 +9,22 @@ class_name State
 func _on_enter_state(_prev_state: State) -> void:
 	pass
 
-## _state_process is a method that when overridden is called by the state
+## _state_postprocess is a method that when overridden is called by the state
+## machine immediately before processing.  The state machine will likely call
+## it from a parent's _physics_process or _process method
+func _state_preprocess(delta: float) -> void:
+	pass
+
+## _state_process is a method that when overridden is called by the
 ## state machine for processing.  The state machine will likely call it 
 ## from a parent's _physics_process or _process method
 func _state_process(delta: float) -> void:
+	pass
+
+## _state_postprocess is a method that when overridden is called by the state
+## machine immediately after processing.  The state machine will likely call
+## it from a parent's _physics_process or _process method
+func _state_postprocess(delta: float) -> void:
 	pass
 	
 ## _check_exit_state is a method that should be overridden and the return value
@@ -47,11 +59,23 @@ func on_enter_state(prev_state: State):
 # this section of code is code that helps to efficiently run _state_process
 # method from "state_process" public method
 
+## state_preprocess will be called from a StateMachine Node's child_state_preprocess
+## public method.
+## DO NOT OVERRIDE
+func state_preprocess(delta: float):
+	_state_preprocess_handler.state_preprocess(delta)
+
 ## state_process will be called from a StateMachine Node's child_state_process
 ## public method.
 ## DO NOT OVERRIDE
 func state_process(delta: float):
 	_state_process_handler.state_process(delta)
+
+## state_postprocess will be called from a StateMachine Node's child_state_postprocess
+## public method.
+## DO NOT OVERRIDE
+func state_postprocess(delta: float):
+	_state_postprocess_handler.state_postprocess(delta)
 
 ## _is_active is used internally in the MyState base class to call processing
 ## only while active
@@ -62,7 +86,21 @@ var _is_active: bool = false:
 		if value == _is_active:
 			return
 		_is_active = value
-		_set_state_process_handler()
+		_set_state_process_handlers()
+
+## _active_state_preprocess_handler will call _state_preprocess if _state_preprocess
+## is defined.
+var _active_state_preprocess_handler: ActiveStatePreprocessHandler = null
+
+## _inactive_state_preprocess_handler will always simply call "pass" 
+## this handler is only used when _is_active is false
+## state should only be inactive when it has been exited but not yet swapped
+## to a new state.
+var _inactive_state_preprocess_handler: StatePreprocessHandlerBase = null
+
+## _state_preprocess_handler holds current state process handler 
+## (inactive or active)
+var _state_preprocess_handler: StatePreprocessHandlerBase = null
 
 ## _active_state_process_handler will call _state_process if _state_process
 ## is defined.
@@ -78,20 +116,42 @@ var _inactive_state_process_handler: StateProcessHandlerBase = null
 ## (inactive or active)
 var _state_process_handler: StateProcessHandlerBase = null
 
-## _set_state_process_handler can be called to update _state_process_handler
+## _active_state_postprocess_handler will call _state_postprocess if _state_postprocess
+## is defined.
+var _active_state_postprocess_handler: ActiveStatePostprocessHandler = null
+
+## _inactive_state_postprocess_handler will always simply call "pass" 
+## this handler is only used when _is_active is false
+## state should only be inactive when it has been exited but not yet swapped
+## to a new state.
+var _inactive_state_postprocess_handler: StatePostprocessHandlerBase = null
+
+## _state_postprocess_handler holds current state process handler 
+## (inactive or active)
+var _state_postprocess_handler: StatePostprocessHandlerBase = null
+
+## _set_state_postprocess_handler can be called to update _state_process_handler
 ## based on _is_active state
-func _set_state_process_handler():
+func _set_state_process_handlers():
 	if _is_active:
+		_state_preprocess_handler = _active_state_preprocess_handler
 		_state_process_handler = _active_state_process_handler
+		_state_postprocess_handler = _active_state_postprocess_handler
 	else:
+		_state_preprocess_handler = _inactive_state_preprocess_handler
 		_state_process_handler = _inactive_state_process_handler
+		_state_postprocess_handler = _inactive_state_postprocess_handler
 
 ## _init_state_process_handlers called from _ready function to initialize
 ## state process handlers
 func _init_state_process_handlers() -> void:
+	_inactive_state_preprocess_handler = StatePreprocessHandlerBase.new(self)
+	_active_state_preprocess_handler = ActiveStatePreprocessHandler.new(self)
 	_inactive_state_process_handler = StateProcessHandlerBase.new(self)
 	_active_state_process_handler = ActiveStateProcessHandler.new(self)
-	_set_state_process_handler()
+	_inactive_state_postprocess_handler = StatePostprocessHandlerBase.new(self)
+	_active_state_postprocess_handler = ActiveStatePostprocessHandler.new(self)
+	_set_state_process_handlers()
 
 # ================== END _state_process handling ===============================
 

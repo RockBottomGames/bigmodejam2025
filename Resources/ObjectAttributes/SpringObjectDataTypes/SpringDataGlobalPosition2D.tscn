@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cvu30lo1t75x5"]
+
+[ext_resource type="Script" path="res://Resources/ObjectAttributes/SpringObjectDataTypes/spring_data_global_position_2d.gd" id="1_rn8bw"]
+
+[node name="SpringDataGlobalPosition2d" type="Node"]
+script = ExtResource("1_rn8bw")

@@ -30,11 +30,23 @@ func reset() -> void:
 		node_data.reset()
 	switch_child_states(_default_state)
 
+## optionally call child_state_preprocess periodically, likely from _process or 
+## _physics_process before child_state_process
+func child_state_preprocess(delta: float) -> void:
+	state_preprocess(delta)
+	_current_state.state_preprocess(delta)
+
 ## call child_state_process periodically, likely from _process or 
 ## _physics_process
 func child_state_process(delta: float) -> void:
 	state_process(delta)
 	_current_state.state_process(delta)
+
+## optionally call child_state_postprocess periodically, likely from _process or 
+## _physics_process after child_state_process
+func child_state_postprocess(delta: float) -> void:
+	state_postprocess(delta)
+	_current_state.state_postprocess(delta)
 
 ## internally called to check if the child state should be switched.
 func _check_exit_child_state() -> int:

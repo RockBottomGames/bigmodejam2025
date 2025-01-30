@@ -1,0 +1,46 @@
+[gd_scene load_steps=11 format=3 uid="uid://daf0p10o37s2j"]
+
+[ext_resource type="Script" path="res://Physics/SpringStateMachine/spring_state_machine_container.gd" id="1_m0x24"]
+[ext_resource type="Script" path="res://Physics/SpringStateMachine/StateExternals/spring_external_nodes.gd" id="2_icw0a"]
+[ext_resource type="Script" path="res://Scripts/StateMachine/state_machine.gd" id="2_xeo1g"]
+[ext_resource type="Script" path="res://Physics/SpringStateMachine/StateExternals/spring_external_data.gd" id="4_3ryfb"]
+[ext_resource type="Script" path="res://Physics/SpringStateMachine/States/spring_unhooked_state.gd" id="5_4g51f"]
+[ext_resource type="Script" path="res://Physics/SpringStateMachine/States/spring_lerp_to_hooked_state.gd" id="6_o41ql"]
+[ext_resource type="Script" path="res://Physics/SpringStateMachine/States/spring_hooked_state.gd" id="7_ejddl"]
+[ext_resource type="Script" path="res://Physics/SpringStateMachine/States/spring_lerp_to_rehooked_state.gd" id="8_hbv13"]
+[ext_resource type="Script" path="res://Physics/SpringStateMachine/States/spring_lerp_to_unhooked_state.gd" id="9_441ff"]
+
+[sub_resource type="Resource" id="Resource_7pul8"]
+script = ExtResource("4_3ryfb")
+lerp_speed = 5.0
+hooked_rotation = -1.5708
+
+[node name="SpringStateMachineContainer" type="Node2D"]
+script = ExtResource("1_m0x24")
+
+[node name="SpringExternalStateNodes" type="Node" parent="." node_paths=PackedStringArray("state_container_node")]
+unique_name_in_owner = true
+script = ExtResource("2_icw0a")
+state_container_node = NodePath("..")
+
+[node name="SpringStateMachine" type="Node2D" parent="." node_paths=PackedStringArray("states", "node_data")]
+unique_name_in_owner = true
+script = ExtResource("2_xeo1g")
+states = [NodePath("Unhooked"), NodePath("LerpToHooked"), NodePath("Hooked"), NodePath("LerpToRehooked"), NodePath("LerpToUnhooked")]
+data = SubResource("Resource_7pul8")
+node_data = NodePath("../SpringExternalStateNodes")
+
+[node name="Unhooked" type="Node2D" parent="SpringStateMachine"]
+script = ExtResource("5_4g51f")
+
+[node name="LerpToHooked" type="Node2D" parent="SpringStateMachine"]
+script = ExtResource("6_o41ql")
+
+[node name="Hooked" type="Node2D" parent="SpringStateMachine"]
+script = ExtResource("7_ejddl")
+
+[node name="LerpToRehooked" type="Node2D" parent="SpringStateMachine"]
+script = ExtResource("8_hbv13")
+
+[node name="LerpToUnhooked" type="Node2D" parent="SpringStateMachine"]
+script = ExtResource("9_441ff")
